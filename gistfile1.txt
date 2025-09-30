@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lives do Alanzoka | Jogos e Caos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Paleta de Cores: #0a0a0a (Fundo), #1a1a1a (Áreas), #9147ff (Destaque - Roxo Twitch/Live) */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: #1a1a1a;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo h1 {
+            font-size: 1.8em;
+            color: #ffffff;
+        }
+
+        .logo h1 strong {
+            color: #9147ff; /* Destaque Roxo */
+        }
+
+        header nav a {
+            color: #b3b3b3;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover,
+        header nav a.active {
+            color: #9147ff;
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 40px;
+            display: grid;
+            /* Player principal (2/3) | Lista lateral (1/3) */
+            grid-template-columns: 2fr 1fr; 
+            gap: 30px;
+        }
+
+        /* --- LIVE PLAYER SECTION --- */
+        #live-player-section {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        #main-video-player {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .live-status-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #e91e63; /* Cor de Live! */
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        #live-info {
+            padding-top: 10px;
+        }
+
+        #live-title {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            color: #9147ff;
+        }
+
+        .streamer-details {
+            color: #b3b3b3;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .streamer-name {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .views-count {
+            color: #e91e63;
+        }
+
+        #follow-btn {
+            background-color: #9147ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #follow-btn:hover {
+            background-color: #772ce8;
+        }
+
+        /* --- RECOMMENDED/VOD SECTION --- */
+        #recommended-lives {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #recommended-lives h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        #vod-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .vod-card {
+            display: flex;
+            gap: 15px;
+            background-color: #252525;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .vod-card:hover {
+            background-color: #333333;
+        }
+
+        .vod-card img {
+            width: 120px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .card-text h4 {
+            font-size: 1em;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .card-text p {
+            font-size: 0.85em;
+            color: #b3b3b3;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #252525;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* --- RESPONSIVIDADE (Celulares e Tablets) --- */
+        @media (max-width: 992px) {
+            main {
+                grid-template-columns: 1fr; /* Coluna única em telas menores */
+                padding: 0 20px;
+            }
+
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            header nav {
+                margin-top: 10px;
+            }
+
+            header nav a {
+                margin: 0 10px;
+            }
+
+            #live-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+    </head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Lives do **Alanzoka**</h1>
+        </div>
+        <nav>
+            <a href="#" class="active">Em Live</a>
+            <a href="#">VODs</a>
+            <a href="#">Clips</a>
+            <a href="#">Contato</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="live-player-section">
+            <div class="video-container">
+                <video id="main-video-player" controls autoplay muted poster="alan-placeholder.jpg">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+                <div class="live-status-badge">AO VIVO</div>
+            </div>
+            
+            <div id="live-info">
+                <h2 id="live-title">O CAOS REINA: Jogo Aleatório de Terror!</h2>
+                <div class="streamer-details">
+                    <span class="streamer-name">Alanzoka</span>
+                    <span class="separator">|</span>
+                    <span id="views" class="views-count">14.5K espectadores</span>
+                </div>
+                <button id="follow-btn">⭐ Seguir</button>
+            </div>
+        </section>
+
+        <section id="recommended-lives">
+            <h2>Últimos VODs / Destaques</h2>
+            <div id="vod-list">
+                <div class="vod-card" data-title="Caminhando Pelo Campo Minado" data-streamer="Alanzoka" data-views="220K visualizações" data-url="vod-1.mp4">
+                    <img src="vod-mini-1.jpg" alt="Miniatura 1">
+                    <div class="card-text">
+                        <h4>Caminhando Pelo Campo Minado</h4>
+                        <p>220K visualizações</p>
+                    </div>
+                </div>
+                <div class="vod-card" data-title="A Lenda de Zelda: O Jogo Que Não Roda" data-streamer="Alanzoka" data-views="180K visualizações" data-url="vod-2.mp4">
+                    <img src="vod-mini-2.jpg" alt="Miniatura 2">
+                    <div class="card-text">
+                        <h4>A Lenda de Zelda: O Jogo Que Não Roda</h4>
+                        <p>180K visualizações</p>
+                    </div>
+                </div>
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por Fãs do Alanzoka (Simulação de Frontend)</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainVideoPlayer = document.getElementById('main-video-player');
+            const liveTitle = document.getElementById('live-title');
+            const streamerDetails = document.querySelector('.streamer-details');
+            const followBtn = document.getElementById('follow-btn');
+            const vodList = document.getElementById('vod-list');
+
+            // Estado inicial do botão
+            let isFollowing = false;
+            followBtn.textContent = '⭐ Seguir';
+
+            // Ação do Botão Seguir
+            followBtn.addEventListener('click', () => {
+                isFollowing = !isFollowing; // Inverte o estado
+                if (isFollowing) {
+                    followBtn.textContent = '✔️ Seguindo';
+                    followBtn.style.backgroundColor = '#772ce8';
+                    alert('Você agora está seguindo o Alanzoka! É o puro suco do caos.');
+                } else {
+                    followBtn.textContent = '⭐ Seguir';
+                    followBtn.style.backgroundColor = '#9147ff';
+                    alert('Você parou de seguir. Volte para o caos quando quiser!');
+                }
+            });
+
+            // Função para carregar um vídeo no player principal
+            function loadVideo(title, streamer, views, url) {
+                // Atualiza o Player
+                mainVideoPlayer.src = url;
+                mainVideoPlayer.load(); // Recarrega o player com a nova fonte
+                
+                // Atualiza as Informações
+                liveTitle.textContent = title;
+                
+                const viewsSpan = document.getElementById('views');
+                if (viewsSpan) {
+                    viewsSpan.textContent = views;
+                } else {
+                    // Recria a estrutura caso o elemento não exista
+                    streamerDetails.innerHTML = `<span class="streamer-name">${streamer}</span> <span class="separator">|</span> <span id="views" class="views-count">${views}</span>`;
+                }
+
+                // Simula o scroll para o topo para ver o novo vídeo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Adiciona evento de clique a todos os cards de VOD
+            vodList.querySelectorAll('.vod-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    // Pega os dados do atributo 'data-'
+                    const title = card.getAttribute('data-title');
+                    const streamer = card.getAttribute('data-streamer');
+                    const views = card.getAttribute('data-views');
+                    const url = card.getAttribute('data-url');
+                    
+                    // Chama a função para carregar o vídeo
+                    loadVideo(title, streamer, views, url);
+                });
+            });
+            
+            // Carrega o primeiro VOD ao iniciar (apenas para dar conteúdo ao player)
+            const firstCard = vodList.querySelector('.vod-card');
+            if(firstCard) {
+                loadVideo(
+                    firstCard.getAttribute('data-title'),
+                    firstCard.getAttribute('data-streamer'),
+                    firstCard.getAttribute('data-views'),
+                    firstCard.getAttribute('data-url')
+                );
+            }
+        });
+    </script>
+    </body>
+</html>
